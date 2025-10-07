@@ -1,221 +1,383 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Vithor Roder — Dev</title>
-  <meta name="description" content="Portfólio minimalista" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg1: #0b0f14;
-      --bg2: #0e1620;
-      --accent: #7c4dff;
-      --accent2: #00d4ff;
-      --text: #e8eef6;
-      --muted: #9fb3c8;
-      --glass: rgba(255,255,255,.06);
-      --glass-border: rgba(255,255,255,.15);
-      --shadow: 0 10px 30px rgba(0, 0, 0, .35);
-    }
-    * { box-sizing: border-box; }
-    html, body { height: 100%; }
-    body { 
-      margin: 0;
-      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-      color: var(--text);
-      background: radial-gradient(1200px 800px at 80% -10%, #151a24, transparent),
-                  radial-gradient(1000px 600px at -10% 20%, #111824, transparent),
-                  linear-gradient(160deg, var(--bg1), var(--bg2));
-      overflow-x: hidden;
-    }
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Vithor Roder — Dev</title>
+    <meta name="description" content="Portfólio minimalista" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg1: #000000;
+            --bg2: #000000;
+            --accent: #7c4dff;
+            --accent2: #00d4ff;
+            --text: #e8eef6;
+            --muted: #9fb3c8;
+            --glass: rgba(255, 255, 255, 0);
+            --glass-border: rgba(255, 255, 255, 0);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0);
+        }
 
-    /* ===== Animated starfield/particles ===== */
-    .particles { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
-    .particles span {
-      position: absolute; width: 2px; height: 2px; background: #b6c8ff33; border-radius: 50%;
-      animation: float linear infinite; filter: drop-shadow(0 0 4px #94b8ff66);
-    }
-    @keyframes float {
-      from { transform: translateY(110vh); opacity: 0; }
-      10% { opacity: 1; }
-      to { transform: translateY(-10vh); opacity: .2; }
-    }
+        * {
+            box-sizing: border-box;
+        }
 
-    /* ===== Header ===== */
-    header { position: sticky; top: 0; z-index: 10; backdrop-filter: blur(8px); background: linear-gradient(180deg, rgba(10,14,20,.8), rgba(10,14,20,0)); }
-    .nav { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; }
-    .brand { font-weight: 800; letter-spacing: .5px; }
-    .brand b { 
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      -webkit-background-clip: text; background-clip: text; color: transparent;
-    }
-    .nav a { color: var(--muted); text-decoration: none; margin-left: 18px; font-weight: 600; opacity: .9; }
-    .nav a:hover { color: var(--text); }
+        html,
+        body {
+            height: 100%;
+        }
 
-    /* ===== Hero ===== */
-    .hero { position: relative; z-index: 1; min-height: 88vh; display: grid; place-items: center; padding: 80px 20px 40px; }
-    .hero-inner { max-width: 1100px; width: 100%; display: grid; grid-template-columns: 1.2fr 1fr; gap: 32px; align-items: center; }
-    @media (max-width: 900px) { .hero-inner { grid-template-columns: 1fr; text-align: center; } }
+        body {
+            margin: 0;
+            font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+            color: var(--text);
+            overflow-x: hidden;
+            background: black;
+        }
 
-    .title { font-size: clamp(32px, 6vw, 68px); line-height: 1.05; margin: 0 0 14px; font-weight: 800; letter-spacing: -0.02em; }
-    .title .gradient { background: conic-gradient(from 180deg at 50% 50%, var(--accent), var(--accent2), #37ff9f, var(--accent));
-      -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(0 4px 18px rgba(124,77,255,.25));
-      animation: hue 8s linear infinite;
-    }
-    @keyframes hue { to { filter: hue-rotate(360deg) drop-shadow(0 4px 18px rgba(124,77,255,.25)); } }
+        /* ===== Animated starfield/particles ===== */
+        .particles {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
 
-    .subtitle { color: var(--muted); font-size: clamp(14px, 2.2vw, 18px); max-width: 60ch; margin: 0 0 24px; }
+        .particles span {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #9fa4b533;
+            border-radius: 50%;
+            animation: float linear infinite;
+            filter: drop-shadow(0 0 4px #94b8ff66);
+        }
 
-    .cta { display: flex; flex-wrap: wrap; gap: 12px; }
-    .btn { position: relative; display: inline-flex; align-items: center; gap: 10px; padding: 12px 18px; border-radius: 14px; border: 1px solid var(--glass-border);
-      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); color: var(--text); text-decoration: none; font-weight: 700; box-shadow: var(--shadow); }
-    .btn:hover { transform: translateY(-1px); }
-    .btn.primary { background: linear-gradient(90deg, var(--accent), var(--accent2)); border: none; }
+        @keyframes float {
+            from {
+                transform: translateY(110vh);
+                opacity: 0;
+            }
 
-    .blob { width: clamp(260px, 40vw, 480px); aspect-ratio: 1; margin-inline: auto; background: radial-gradient(circle at 30% 30%, #ffffff20, transparent 60%),
-            radial-gradient(circle at 70% 70%, #ffffff20, transparent 60%), linear-gradient(135deg, var(--accent), var(--accent2));
-            border-radius: 30% 70% 60% 40% / 40% 50% 50% 60%; filter: blur(0.4px) saturate(1.1) drop-shadow(0 35px 60px rgba(0,0,0,.35));
-            animation: blob 12s ease-in-out infinite; position: relative; }
-    @keyframes blob {
-      0%,100% { border-radius: 30% 70% 60% 40% / 40% 50% 50% 60%; transform: rotate(0deg) translate(0,0); }
-      33% { border-radius: 54% 46% 33% 67% / 48% 58% 42% 52%; transform: rotate(8deg) translate(6px, -6px); }
-      66% { border-radius: 42% 58% 65% 35% / 44% 37% 63% 56%; transform: rotate(-6deg) translate(-8px, 4px); }
-    }
+            10% {
+                opacity: 1;
+            }
 
-    /* ===== Grid cards ===== */
-    section { position: relative; z-index: 1; padding: 40px 20px 90px; }
-    .wrap { max-width: 1100px; margin: 0 auto; }
-    .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 18px; }
-    .card { grid-column: span 4; min-height: 160px; padding: 18px; background: var(--glass); border: 1px solid var(--glass-border);
-            border-radius: 18px; box-shadow: var(--shadow); position: relative; overflow: hidden; transform-style: preserve-3d; }
-    .card:hover { translate: 0 -4px; }
-    .card h3 { margin: 6px 0 4px; font-size: 18px; }
-    .card p { margin: 0; color: var(--muted); font-size: 14px; }
-    .tag { position: absolute; top: 12px; right: 12px; font-size: 11px; padding: 6px 10px; border-radius: 999px; border: 1px solid var(--glass-border); color: #dbe7ff; background: rgba(124,77,255,.14); }
-    .shine { position: absolute; inset: -100px; background: radial-gradient(400px 200px at var(--mx,60%) var(--my,60%), #ffffff18, transparent 40%); transition: 80ms linear; pointer-events: none; }
-    .dots { position: absolute; inset: 0; background: radial-gradient(circle at 10% 10%, #ffffff10 1px, transparent 1px) 0 0/22px 22px, radial-gradient(circle at 90% 20%, #ffffff08 1px, transparent 1px) 0 0/28px 28px; opacity: .35; }
+            to {
+                transform: translateY(-10vh);
+                opacity: .2;
+            }
+        }
 
-    @media (max-width: 980px) { .card { grid-column: span 6; } }
-    @media (max-width: 640px) { .card { grid-column: span 12; } }
+        /* ===== Header ===== */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: transparent;
+        }
 
-    /* ===== Section headers ===== */
-    .section-title { font-weight: 800; letter-spacing: .3px; margin: 0 0 16px; font-size: 20px; color: #cdd8e6; opacity: .9; }
+        .nav {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 20px;
+        }
 
-    /* ===== Footer ===== */
-    footer { padding: 30px 20px 30px; color: var(--muted); text-align: center; opacity: .85; }
+        .brand {
+            font-weight: 800;
+            letter-spacing: .5px;
+        }
 
-    /* ===== Scroll reveal ===== */
-    .reveal { opacity: 0; transform: translateY(14px) scale(.98); transition: .6s cubic-bezier(.2,.7,.2,1); }
-    .reveal.show { opacity: 1; transform: none; }
+        .brand b {
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
 
-    /* ===== Cursor aura ===== */
-    .aura { position: fixed; width: 180px; height: 180px; border-radius: 50%; pointer-events: none; z-index: 0; mix-blend-mode: screen; opacity: .18;
-      background: radial-gradient(circle at 50% 50%, #7c4dff55, transparent 60%), radial-gradient(circle at 60% 50%, #00d4ff55, transparent 60%);
-      filter: blur(16px); transform: translate(-50%, -50%); }
-  </style>
+        .nav a {
+            color: var(--muted);
+            text-decoration: none;
+            margin-left: 18px;
+            font-weight: 600;
+            opacity: .9;
+        }
+
+        .nav a:hover {
+            color: var(--text);
+        }
+
+        /* ===== Hero ===== */
+        .hero {
+            position: relative;
+            z-index: 1;
+            min-height: 88vh;
+            display: grid;
+            place-items: center;
+            padding: 80px 20px 40px;
+        }
+
+        .hero-inner {
+            max-width: 1100px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 32px;
+            align-items: center;
+        }
+
+        @media (max-width: 900px) {
+            .hero-inner {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+        }
+
+        .title {
+            font-size: clamp(32px, 6vw, 68px);
+            line-height: 1.05;
+            margin: 0 0 14px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .title .gradient {
+            background: conic-gradient(from 180deg at 50% 50%, var(--accent), var(--accent2), #37ff9f, var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            filter: drop-shadow(0 4px 18px rgba(124, 77, 255, .25));
+            animation: hue 8s linear infinite;
+        }
+
+        @keyframes hue {
+            to {
+                filter: hue-rotate(360deg) drop-shadow(0 4px 18px rgba(124, 77, 255, .25));
+            }
+        }
+
+        .subtitle {
+            color: var(--muted);
+            font-size: clamp(14px, 2.2vw, 18px);
+            max-width: 60ch;
+            margin: 0 0 24px;
+        }
+
+        .cta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .btn {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 18px;
+            border-radius: 14px;
+            border: 1px solid var(--glass-border);
+            background: linear-gradient(180deg, rgba(255, 255, 255, .06), rgba(255, 255, 255, .02));
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 700;
+            box-shadow: var(--shadow);
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .btn.primary {
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            border: none;
+        }
+
+        .blob {
+            width: clamp(260px, 40vw, 480px);
+            aspect-ratio: 1;
+            margin-inline: auto;
+            background: radial-gradient(circle at 30% 30%, #ffffff20, transparent 60%),
+                radial-gradient(circle at 70% 70%, #ffffff20, transparent 60%), linear-gradient(135deg, var(--accent), var(--accent2));
+            border-radius: 30% 70% 60% 40% / 40% 50% 50% 60%;
+            filter: blur(0.4px) saturate(1.1) drop-shadow(0 35px 60px rgba(0, 0, 0, .35));
+            animation: blob 12s ease-in-out infinite;
+            position: relative;
+        }
+
+        @keyframes blob {
+
+            0%,
+            100% {
+                border-radius: 30% 70% 60% 40% / 40% 50% 50% 60%;
+                transform: rotate(0deg) translate(0, 0);
+            }
+
+            33% {
+                border-radius: 54% 46% 33% 67% / 48% 58% 42% 52%;
+                transform: rotate(8deg) translate(6px, -6px);
+            }
+
+            66% {
+                border-radius: 42% 58% 65% 35% / 44% 37% 63% 56%;
+                transform: rotate(-6deg) translate(-8px, 4px);
+            }
+        }
+
+        /* ===== Section headers ===== */
+        .section-title {
+            font-weight: 800;
+            letter-spacing: .3px;
+            margin: 0 0 16px;
+            font-size: 20px;
+            color: #cdd8e6;
+            opacity: .9;
+        }
+
+        /* ===== Footer ===== */
+        footer {
+            padding: 30px 20px 30px;
+            color: var(--muted);
+            text-align: center;
+            opacity: .85;
+        }
+
+        /* ===== Scroll reveal ===== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(14px) scale(.98);
+            transition: .6s cubic-bezier(.2, .7, .2, 1);
+        }
+
+        .reveal.show {
+            opacity: 1;
+            transform: none;
+        }
+
+        /* ===== Cursor aura ===== */
+        .aura {
+            position: fixed;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            mix-blend-mode: screen;
+            opacity: .18;
+            background: radial-gradient(circle at 50% 50%, #7c4dff55, transparent 60%), radial-gradient(circle at 60% 50%, #00d4ff55, transparent 60%);
+            filter: blur(16px);
+            transform: translate(-50%, -50%);
+        }
+    </style>
 </head>
+
 <body>
-  <!-- Animated particles -->
-  <div class="particles" id="particles"></div>
-  <div class="aura" id="aura"></div>
+    <!-- Animated particles -->
+    <div class="particles" id="particles"></div>
+    <div class="aura" id="aura"></div>
 
-  <header>
-    <nav class="nav">
-      <div class="brand">Vithor Roder <b>Dev</b></div>
-      <div>
-        <a href="https://github.com/VithorRoder">Projetos</a>
-        <a href="https://github.com/VithorRoder">Contato</a>
-        <a href="https://github.com/VithorRoder" target="_blank" rel="noreferrer">GitHub</a>
-      </div>
-    </nav>
-  </header>
+    <header>
+        <nav class="nav">
+            <div class="brand">Vithor Roder <b>Dev</b></div>
+            <div>
+                <a href="https://github.com/VithorRoder">Projetos</a>
+                <a href="https://github.com/VithorRoder">Contato</a>
+                <a href="https://github.com/VithorRoder" target="_blank" rel="noreferrer">GitHub</a>
+            </div>
+        </nav>
+    </header>
 
-  <main>
-    <section class="hero">
-      <div class="hero-inner">
-        <div>
-          <h1 class="title reveal"><span class="gradient">Em Breve</span></h1>
-          <p class="subtitle reveal">Portfólio em Desenvolvimento</p>
-          <div class="cta reveal">
-            <a class="btn primary" href="https://github.com/VithorRoder">Ver projetos</a>
-          </div>
-        </div>
-        <div>
-          <div class="blob" aria-hidden="true"></div>
-        </div>
-      </div>
-    </section>
+    <main>
+        <section class="hero">
+            <div class="hero-inner">
+                <div>
+                    <h1 class="title reveal"><span class="gradient">Em Breve</span></h1>
+                    <p class="subtitle reveal">Portfólio em Desenvolvimento</p>
+                    <div class="cta reveal">
+                        <a class="btn primary" href="https://github.com/VithorRoder">Ver projetos</a>
+                    </div>
+                </div>
+                <div>
+                    <div class="blob" aria-hidden="true"></div>
+                </div>
+            </div>
+        </section>
 
-  <footer>
-    © <span id="year"></span> Vithor Roder
-  </footer>
+        <footer>
+            © <span id="year"></span> Vithor Roder
+        </footer>
 
-  <script>
-    // ===== Year
-    document.getElementById('year').textContent = new Date().getFullYear();
+        <script>
+            // ===== Year
+            document.getElementById('year').textContent = new Date().getFullYear();
 
-    // ===== Particles
-    const particles = document.getElementById('particles');
-    const COUNT = 100; // ajuste livre
-    for (let i = 0; i < COUNT; i++) {
-      const s = document.createElement('span');
-      const left = Math.random() * 100;
-      const size = Math.random() * 2 + 1; // 1 - 3px
-      const dur = Math.random() * 18 + 10; // 10 - 28s
-      const delay = -Math.random() * dur; // começa espalhado
-      s.style.left = left + 'vw';
-      s.style.width = size + 'px';
-      s.style.height = size + 'px';
-      s.style.animationDuration = dur + 's';
-      s.style.animationDelay = delay + 's';
-      particles.appendChild(s);
-    }
+            // ===== Particles
+            const particles = document.getElementById('particles');
+            const COUNT = 100; // ajuste livre
+            for (let i = 0; i < COUNT; i++) {
+                const s = document.createElement('span');
+                const left = Math.random() * 100;
+                const size = Math.random() * 2 + 1;
+                const dur = Math.random() * 18 + 10;
+                const delay = -Math.random() * dur;
+                s.style.left = left + 'vw';
+                s.style.width = size + 'px';
+                s.style.height = size + 'px';
+                s.style.animationDuration = dur + 's';
+                s.style.animationDelay = delay + 's';
+                particles.appendChild(s);
+            }
 
-    // ===== Card shine + tilt
-    function handlePointer(e) {
-      const rect = e.currentTarget.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width * 100;
-      const y = (e.clientY - rect.top) / rect.height * 100;
-      e.currentTarget.style.setProperty('--mx', x + '%');
-      e.currentTarget.style.setProperty('--my', y + '%');
-      const rx = (0.5 - y/100) * 6; // tilt sutil
-      const ry = (x/100 - 0.5) * 6;
-      e.currentTarget.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
-    }
-    function resetPointer(e){ e.currentTarget.style.transform = ''; }
+            // ===== Card shine + tilt
+            function handlePointer(e) {
+                const rect = e.currentTarget.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width * 100;
+                const y = (e.clientY - rect.top) / rect.height * 100;
+                e.currentTarget.style.setProperty('--mx', x + '%');
+                e.currentTarget.style.setProperty('--my', y + '%');
+                const rx = (0.5 - y / 100) * 6;
+                const ry = (x / 100 - 0.5) * 6;
+                e.currentTarget.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
+            }
+            function resetPointer(e) { e.currentTarget.style.transform = ''; }
 
-    document.querySelectorAll('[data-tilt]').forEach(card => {
-      card.addEventListener('mousemove', handlePointer);
-      card.addEventListener('mouseleave', resetPointer);
-    });
+            document.querySelectorAll('[data-tilt]').forEach(card => {
+                card.addEventListener('mousemove', handlePointer);
+                card.addEventListener('mouseleave', resetPointer);
+            });
 
-    // ===== Scroll reveal
-    const revealEls = document.querySelectorAll('.reveal');
-    const io = new IntersectionObserver((entries)=>{
-      entries.forEach((en)=>{
-        if (en.isIntersecting) en.target.classList.add('show');
-      })
-    }, { threshold: .12 });
-    revealEls.forEach(el => io.observe(el));
+            // ===== Scroll reveal
+            const revealEls = document.querySelectorAll('.reveal');
+            const io = new IntersectionObserver((entries) => {
+                entries.forEach((en) => {
+                    if (en.isIntersecting) en.target.classList.add('show');
+                })
+            }, { threshold: .12 });
+            revealEls.forEach(el => io.observe(el));
 
-    // ===== Cursor aura follows
-    const aura = document.getElementById('aura');
-    window.addEventListener('pointermove', (e)=>{
-      aura.style.left = e.clientX + 'px';
-      aura.style.top = e.clientY + 'px';
-    });
+            // ===== Cursor aura follows
+            const aura = document.getElementById('aura');
+            window.addEventListener('pointermove', (e) => {
+                aura.style.left = e.clientX + 'px';
+                aura.style.top = e.clientY + 'px';
+            });
 
-    // ===== Parallax blob
-    const blob = document.querySelector('.blob');
-    if (blob) {
-      window.addEventListener('pointermove', (e)=>{
-        const x = (e.clientX / window.innerWidth - .5) * 14;
-        const y = (e.clientY / window.innerHeight - .5) * 14;
-        blob.style.transform = `translate(${x}px, ${y}px)`;
-      })
-    }
-  </script>
+            // ===== Parallax blob
+            const blob = document.querySelector('.blob');
+            if (blob) {
+                window.addEventListener('pointermove', (e) => {
+                    const x = (e.clientX / window.innerWidth - .5) * 14;
+                    const y = (e.clientY / window.innerHeight - .5) * 14;
+                    blob.style.transform = `translate(${x}px, ${y}px)`;
+                })
+            }
+        </script>
 </body>
+
 </html>
