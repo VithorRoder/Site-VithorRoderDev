@@ -2,385 +2,2446 @@
 <html lang="pt-br">
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Vithor Roder — Dev</title>
-    <meta name="description" content="Portfólio minimalista" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg1: #000000;
-            --bg2: #000000;
-            --accent: #7c4dff;
-            --accent2: #00d4ff;
-            --text: #e8eef6;
-            --muted: #9fb3c8;
-            --glass: rgba(255, 255, 255, 0);
-            --glass-border: rgba(255, 255, 255, 0);
-            --shadow: 0 10px 30px rgba(0, 0, 0, 0);
-        }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vithor Roder — Full-Stack Java Developer</title>
+  <meta name="description"
+    content="Vithor Roder — Full-Stack Developer focused on Java, Spring, Quarkus and clean architecture. Based in Rio de Janeiro, Brazil." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Space+Grotesk:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <style>
+    /* =========================================
+       DESIGN TOKENS — equivalente a tailwind.config.ts
+    ========================================= */
+    :root {
+      --bg: #0a0c0a;
+      --bg2: #0f120e;
+      --bg3: #141a13;
+      --surface: #1a2118;
+      --surface2: #1f2a1d;
+      --border: #2a3828;
+      --green: #39ff14;
+      --green2: #00e676;
+      --green-dim: #1a4a1a;
+      --green-glow: #39ff1430;
+      --muted: #4a6b3a;
+      --text: #c8e6c9;
+      --text2: #81c784;
+      --cursor: #39ff14;
+      --mono: 'JetBrains Mono', monospace;
+      --sans: 'Space Grotesk', system-ui, sans-serif;
+      --radius: 6px;
+      --radius-lg: 12px;
+    }
 
-        * {
-            box-sizing: border-box;
-        }
+    /* =========================================
+       RESET & BASE
+    ========================================= */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-        html,
-        body {
-            height: 100%;
-        }
+    html {
+      scroll-behavior: smooth;
+    }
 
-        body {
-            margin: 0;
-            font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-            color: var(--text);
-            overflow-x: hidden;
-            background: black;
-        }
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      cursor: none;
+    }
 
-        /* ===== Animated starfield/particles ===== */
-        .particles {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: 0;
-        }
+    ::selection {
+      background: var(--green-dim);
+      color: var(--green);
+    }
 
-        .particles span {
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: #9fa4b533;
-            border-radius: 50%;
-            animation: float linear infinite;
-            filter: drop-shadow(0 0 4px #94b8ff66);
-        }
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
 
-        @keyframes float {
-            from {
-                transform: translateY(110vh);
-                opacity: 0;
-            }
+    ::-webkit-scrollbar-track {
+      background: var(--bg);
+    }
 
-            10% {
-                opacity: 1;
-            }
+    ::-webkit-scrollbar-thumb {
+      background: var(--green-dim);
+      border-radius: 2px;
+    }
 
-            to {
-                transform: translateY(-10vh);
-                opacity: .2;
-            }
-        }
+    /* =========================================
+       CURSOR PERSONALIZADO
+    ========================================= */
+    .cursor-dot {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 8px;
+      height: 8px;
+      background: var(--green);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: opacity .2s;
+      box-shadow: 0 0 10px var(--green), 0 0 20px var(--green-glow);
+    }
 
-        /* ===== Header ===== */
-        header {
-            position: sticky;
-            top: 0;
-            z-index: 10;
-            background: transparent;
-        }
+    .cursor-ring {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--green);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: width .15s, height .15s, opacity .2s;
+      opacity: .4;
+    }
 
-        .nav {
-            max-width: 1100px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 14px 20px;
-        }
+    body:hover .cursor-ring {
+      opacity: .6;
+    }
 
-        .brand {
-            font-weight: 800;
-            letter-spacing: .5px;
-        }
+    /* =========================================
+       SCAN LINE EFFECT
+    ========================================= */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(0deg,
+          transparent,
+          transparent 2px,
+          rgba(0, 0, 0, .07) 2px,
+          rgba(0, 0, 0, .07) 4px);
+      pointer-events: none;
+      z-index: 1000;
+    }
 
-        .brand b {
-            background: linear-gradient(90deg, var(--accent), var(--accent2));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
+    /* =========================================
+       MATRIX RAIN CANVAS
+    ========================================= */
+    #matrix-canvas {
+      position: fixed;
+      inset: 0;
+      opacity: .04;
+      pointer-events: none;
+      z-index: 0;
+    }
 
-        .nav a {
-            color: var(--muted);
-            text-decoration: none;
-            margin-left: 18px;
-            font-weight: 600;
-            opacity: .9;
-        }
+    /* =========================================
+       NAVEGAÇÃO
+    ========================================= */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 16px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(to bottom, var(--bg), transparent);
+      border-bottom: 1px solid transparent;
+      transition: border-color .3s, background .3s;
+    }
 
-        .nav a:hover {
-            color: var(--text);
-        }
+    nav.scrolled {
+      background: rgba(10, 12, 10, .92);
+      border-color: var(--border);
+      backdrop-filter: blur(12px);
+    }
 
-        /* ===== Hero ===== */
-        .hero {
-            position: relative;
-            z-index: 1;
-            min-height: 88vh;
-            display: grid;
-            place-items: center;
-            padding: 80px 20px 40px;
-        }
+    .nav-brand {
+      font-family: var(--mono);
+      font-size: 14px;
+      color: var(--green);
+      letter-spacing: .05em;
+    }
 
-        .hero-inner {
-            max-width: 1100px;
-            width: 100%;
-            display: grid;
-            grid-template-columns: 1.2fr 1fr;
-            gap: 32px;
-            align-items: center;
-        }
+    .nav-brand .prompt {
+      color: var(--muted);
+    }
 
-        @media (max-width: 900px) {
-            .hero-inner {
-                grid-template-columns: 1fr;
-                text-align: center;
-            }
-            .cta {
-                justify-content: center;
-            }
-        }
+    .nav-links {
+      display: flex;
+      gap: 32px;
+    }
 
-        .title {
-            font-size: clamp(32px, 6vw, 68px);
-            line-height: 1.05;
-            margin: 0 0 14px;
-            font-weight: 800;
-            letter-spacing: -0.02em;
-        }
+    .nav-links a {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      transition: color .2s;
+      position: relative;
+    }
 
-        .title .gradient {
-            background: conic-gradient(from 180deg at 50% 50%, var(--accent), var(--accent2), #37ff9f, var(--accent));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            filter: drop-shadow(0 4px 18px rgba(124, 77, 255, .25));
-            animation: hue 8s linear infinite;
-        }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: var(--green);
+      transform: scaleX(0);
+      transition: transform .2s;
+    }
 
-        @keyframes hue {
-            to {
-                filter: hue-rotate(360deg) drop-shadow(0 4px 18px rgba(124, 77, 255, .25));
-            }
-        }
+    .nav-links a:hover {
+      color: var(--green);
+    }
 
-        .subtitle {
-            color: var(--muted);
-            font-size: clamp(14px, 2.2vw, 18px);
-            max-width: 60ch;
-            margin: 0 0 24px;
-        }
+    .nav-links a:hover::after {
+      transform: scaleX(1);
+    }
 
-        .cta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
+    /* =========================================
+       SEÇÕES BASE
+    ========================================= */
+    section {
+      position: relative;
+      z-index: 1;
+    }
 
-        .btn {
-            position: relative;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 12px 18px;
-            border-radius: 14px;
-            border: 1px solid var(--glass-border);
-            background: linear-gradient(180deg, rgba(255, 255, 255, .06), rgba(255, 255, 255, .02));
-            color: var(--text);
-            text-decoration: none;
-            font-weight: 700;
-            box-shadow: var(--shadow);
-        }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
 
-        .btn:hover {
-            transform: translateY(-1px);
-        }
+    /* =========================================
+       HERO
+    ========================================= */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: 80px;
+    }
 
-        .btn.primary {
-            background: linear-gradient(90deg, var(--accent), var(--accent2));
-            border: none;
-        }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
 
-        .blob {
-            width: clamp(260px, 40vw, 480px);
-            aspect-ratio: 1;
-            margin-inline: auto;
-            background: radial-gradient(circle at 30% 30%, #ffffff20, transparent 60%),
-                radial-gradient(circle at 70% 70%, #ffffff20, transparent 60%), linear-gradient(135deg, var(--accent), var(--accent2));
-            border-radius: 30% 70% 60% 40% / 40% 50% 50% 60%;
-            filter: blur(0.4px) saturate(1.1) drop-shadow(0 35px 60px rgba(0, 0, 0, .35));
-            animation: blob 12s ease-in-out infinite;
-            position: relative;
-        }
+    @media (max-width: 800px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
 
-        @keyframes blob {
+      .hero-terminal {
+        display: none;
+      }
+    }
 
-            0%,
-            100% {
-                border-radius: 30% 70% 60% 40% / 40% 50% 50% 60%;
-                transform: rotate(0deg) translate(0, 0);
-            }
+    .hero-eyebrow {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--green);
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-            33% {
-                border-radius: 54% 46% 33% 67% / 48% 58% 42% 52%;
-                transform: rotate(8deg) translate(6px, -6px);
-            }
+    .hero-eyebrow::before {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 1px;
+      background: var(--green);
+    }
 
-            66% {
-                border-radius: 42% 58% 65% 35% / 44% 37% 63% 56%;
-                transform: rotate(-6deg) translate(-8px, 4px);
-            }
-        }
+    .hero-name {
+      font-family: var(--mono);
+      font-size: clamp(36px, 6vw, 72px);
+      font-weight: 700;
+      line-height: 1;
+      color: #fff;
+      letter-spacing: -.02em;
+      margin-bottom: 8px;
+    }
 
-        /* ===== Section headers ===== */
-        .section-title {
-            font-weight: 800;
-            letter-spacing: .3px;
-            margin: 0 0 16px;
-            font-size: 20px;
-            color: #cdd8e6;
-            opacity: .9;
-        }
+    .hero-name .accent {
+      color: var(--green);
+    }
 
-        /* ===== Footer ===== */
-        footer {
-            padding: 30px 20px 30px;
-            color: var(--muted);
-            text-align: center;
-            opacity: .85;
-        }
+    .hero-role {
+      font-family: var(--mono);
+      font-size: clamp(14px, 2vw, 20px);
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
 
-        /* ===== Scroll reveal ===== */
-        .reveal {
-            opacity: 0;
-            transform: translateY(14px) scale(.98);
-            transition: .6s cubic-bezier(.2, .7, .2, 1);
-        }
+    .hero-role .typed-text {
+      color: var(--green2);
+    }
 
-        .reveal.show {
-            opacity: 1;
-            transform: none;
-        }
+    .hero-bio {
+      font-size: 15px;
+      color: var(--text2);
+      line-height: 1.7;
+      max-width: 44ch;
+      margin-bottom: 36px;
+    }
 
-        /* ===== Cursor aura ===== */
-        .aura {
-            position: fixed;
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 0;
-            mix-blend-mode: screen;
-            opacity: .18;
-            background: radial-gradient(circle at 50% 50%, #7c4dff55, transparent 60%), radial-gradient(circle at 60% 50%, #00d4ff55, transparent 60%);
-            filter: blur(16px);
-            transform: translate(-50%, -50%);
-        }
-    </style>
+    .hero-cta {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      font-family: var(--mono);
+      font-size: 13px;
+      padding: 12px 24px;
+      background: transparent;
+      border: 1px solid var(--green);
+      color: var(--green);
+      text-decoration: none;
+      border-radius: var(--radius);
+      cursor: none;
+      transition: all .2s;
+      letter-spacing: .05em;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--green);
+      transform: translateX(-100%);
+      transition: transform .25s;
+      z-index: -1;
+    }
+
+    .btn-primary:hover {
+      color: var(--bg);
+    }
+
+    .btn-primary:hover::before {
+      transform: translateX(0);
+    }
+
+    .btn-secondary {
+      font-family: var(--mono);
+      font-size: 13px;
+      padding: 12px 24px;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      text-decoration: none;
+      border-radius: var(--radius);
+      cursor: none;
+      transition: all .2s;
+      letter-spacing: .05em;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--green);
+      color: var(--green);
+    }
+
+    .hero-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 24px;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      background: var(--green);
+      border-radius: 50%;
+      animation: pulse-dot 2s ease-in-out infinite;
+      box-shadow: 0 0 8px var(--green);
+    }
+
+    @keyframes pulse-dot {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: .3;
+      }
+    }
+
+    /* =========================================
+       MINI TERMINAL NO HERO
+    ========================================= */
+    .hero-terminal {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: 0 0 60px rgba(57, 255, 20, .05), 0 40px 80px rgba(0, 0, 0, .5);
+    }
+
+    .terminal-titlebar {
+      background: var(--surface);
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .dot-r {
+      background: #ff5f56;
+    }
+
+    .dot-y {
+      background: #ffbd2e;
+    }
+
+    .dot-g {
+      background: #27c93f;
+    }
+
+    .terminal-title {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      margin-left: 8px;
+    }
+
+    .terminal-body {
+      padding: 20px;
+      font-family: var(--mono);
+      font-size: 13px;
+      line-height: 1.8;
+      min-height: 280px;
+    }
+
+    .t-prompt {
+      color: var(--green);
+    }
+
+    .t-cmd {
+      color: var(--text);
+    }
+
+    .t-out {
+      color: var(--muted);
+      padding-left: 4px;
+    }
+
+    .t-out .hi {
+      color: var(--green2);
+    }
+
+    .t-out .num {
+      color: #f0a500;
+    }
+
+    .t-cursor {
+      display: inline-block;
+      width: 8px;
+      height: 14px;
+      background: var(--green);
+      animation: blink .7s step-end infinite;
+      vertical-align: middle;
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0;
+      }
+    }
+
+    /* =========================================
+       SECTION HEADER
+    ========================================= */
+    .sec-header {
+      margin-bottom: 60px;
+    }
+
+    .sec-tag {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--green);
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sec-tag::before {
+      content: '//';
+      color: var(--muted);
+    }
+
+    .sec-title {
+      font-size: clamp(24px, 4vw, 40px);
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -.02em;
+    }
+
+    .sec-line {
+      width: 48px;
+      height: 2px;
+      background: var(--green);
+      margin-top: 16px;
+      box-shadow: 0 0 12px var(--green);
+    }
+
+    /* =========================================
+       ABOUT
+    ========================================= */
+    #about {
+      padding: 120px 0;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    @media (max-width: 800px) {
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+    }
+
+    .about-text p {
+      font-size: 15px;
+      color: var(--text2);
+      line-height: 1.8;
+      margin-bottom: 18px;
+    }
+
+    .about-text p .hi {
+      color: var(--green);
+      font-weight: 500;
+    }
+
+    .about-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+
+    .about-card-header {
+      color: var(--muted);
+      margin-bottom: 20px;
+      font-size: 11px;
+      letter-spacing: .1em;
+    }
+
+    .about-stat {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .about-stat:last-child {
+      border-bottom: none;
+    }
+
+    .about-stat-key {
+      color: var(--muted);
+    }
+
+    .about-stat-val {
+      color: var(--green);
+    }
+
+    /* =========================================
+       SKILLS
+    ========================================= */
+    #skills {
+      padding: 120px 0;
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .skill-category {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      transition: border-color .3s, box-shadow .3s;
+    }
+
+    .skill-category:hover {
+      border-color: var(--green-dim);
+      box-shadow: 0 0 30px rgba(57, 255, 20, .05);
+    }
+
+    .skill-cat-title {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--green);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .skill-cat-title .icon {
+      font-size: 16px;
+    }
+
+    .skill-item {
+      margin-bottom: 14px;
+    }
+
+    .skill-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .skill-item-top {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--text2);
+      margin-bottom: 6px;
+    }
+
+    .skill-pct {
+      color: var(--muted);
+    }
+
+    .skill-bar {
+      height: 3px;
+      background: var(--bg);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .skill-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--green), var(--green2));
+      border-radius: 2px;
+      transform-origin: left;
+      transform: scaleX(0);
+      transition: transform 1.2s cubic-bezier(.25, 1, .5, 1);
+      box-shadow: 0 0 8px rgba(57, 255, 20, .4);
+    }
+
+    .skill-item.visible .skill-fill {
+      transform: scaleX(1);
+    }
+
+    /* =========================================
+       IDE INTERATIVA
+    ========================================= */
+    #playground {
+      padding: 120px 0;
+    }
+
+    .ide-wrapper {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: 0 0 80px rgba(57, 255, 20, .04), 0 60px 120px rgba(0, 0, 0, .6);
+    }
+
+    /* Barra de abas */
+    .ide-tabs {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      height: 44px;
+      gap: 2px;
+    }
+
+    .ide-tab {
+      font-family: var(--mono);
+      font-size: 12px;
+      padding: 0 16px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      border-bottom: 2px solid transparent;
+      cursor: none;
+      transition: color .2s, border-color .2s;
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    .ide-tab.active {
+      color: var(--green);
+      border-color: var(--green);
+      background: rgba(57, 255, 20, .04);
+    }
+
+    .ide-tab:hover:not(.active) {
+      color: var(--text2);
+    }
+
+    .ide-tab .ext {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    /* Layout principal */
+    .ide-main {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 460px;
+    }
+
+    @media (max-width: 700px) {
+      .ide-main {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Editor */
+    .ide-editor-pane {
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ide-editor-header {
+      background: var(--surface2);
+      padding: 8px 16px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .ide-lang-badge {
+      background: var(--green-dim);
+      color: var(--green);
+      padding: 2px 8px;
+      border-radius: 3px;
+      font-size: 10px;
+      letter-spacing: .05em;
+    }
+
+    .editor-wrap {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .line-numbers {
+      padding: 16px 12px;
+      font-family: var(--mono);
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--border);
+      text-align: right;
+      user-select: none;
+      min-width: 40px;
+      border-right: 1px solid var(--border);
+      background: var(--bg2);
+    }
+
+    #code-editor {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      resize: none;
+      font-family: var(--mono);
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--text);
+      padding: 16px;
+      tab-size: 2;
+      caret-color: var(--green);
+      overflow-y: auto;
+    }
+
+    /* Toolbar */
+    .ide-toolbar {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .ide-toolbar-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .ide-info {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .run-btn {
+      font-family: var(--mono);
+      font-size: 12px;
+      padding: 8px 20px;
+      background: var(--green);
+      color: var(--bg);
+      border: none;
+      border-radius: var(--radius);
+      cursor: none;
+      font-weight: 700;
+      letter-spacing: .05em;
+      transition: all .2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .run-btn:hover {
+      background: var(--green2);
+      transform: translateY(-1px);
+    }
+
+    .run-btn:active {
+      transform: translateY(0);
+    }
+
+    .run-btn.running {
+      opacity: .7;
+    }
+
+    /* Output pane */
+    .ide-output-pane {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ide-output-header {
+      background: var(--surface2);
+      padding: 8px 16px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .output-status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+    }
+
+    .output-status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--muted);
+    }
+
+    .output-status-dot.success {
+      background: var(--green);
+      box-shadow: 0 0 6px var(--green);
+    }
+
+    .output-status-dot.error {
+      background: #ff5f56;
+      box-shadow: 0 0 6px #ff5f5688;
+    }
+
+    .output-status-dot.running {
+      background: #f0a500;
+      animation: pulse-dot 1s infinite;
+    }
+
+    #output-area {
+      flex: 1;
+      padding: 16px;
+      font-family: var(--mono);
+      font-size: 13px;
+      line-height: 1.6;
+      overflow-y: auto;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 200px;
+    }
+
+    .out-line {
+      margin-bottom: 2px;
+    }
+
+    .out-line.out-prompt {
+      color: var(--green);
+    }
+
+    .out-line.out-error {
+      color: #ff5f56;
+    }
+
+    .out-line.out-warn {
+      color: #f0a500;
+    }
+
+    .out-line.out-info {
+      color: var(--green2);
+    }
+
+    .out-line.out-num {
+      color: #f0a500;
+    }
+
+    /* Exemplos pré-definidos */
+    .ide-examples {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 12px 16px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .ide-examples-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      margin-right: 4px;
+    }
+
+    .example-chip {
+      font-family: var(--mono);
+      font-size: 11px;
+      padding: 4px 12px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text2);
+      border-radius: 20px;
+      cursor: none;
+      transition: all .2s;
+    }
+
+    .example-chip:hover {
+      border-color: var(--green);
+      color: var(--green);
+      background: var(--green-dim);
+    }
+
+    /* =========================================
+       CONTATO
+    ========================================= */
+    #contact {
+      padding: 120px 0;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    @media (max-width: 800px) {
+      .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+    }
+
+    .contact-text p {
+      font-size: 15px;
+      color: var(--text2);
+      line-height: 1.8;
+      margin-bottom: 28px;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      text-decoration: none;
+      transition: all .2s;
+      color: var(--text2);
+    }
+
+    .contact-link:hover {
+      border-color: var(--green);
+      color: var(--green);
+      background: var(--surface2);
+      transform: translateX(4px);
+    }
+
+    .contact-link-icon {
+      font-size: 20px;
+      width: 40px;
+      height: 40px;
+      background: var(--bg);
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border);
+    }
+
+    .contact-link-info {
+      flex: 1;
+    }
+
+    .contact-link-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .1em;
+    }
+
+    .contact-link-value {
+      font-family: var(--mono);
+      font-size: 13px;
+      margin-top: 2px;
+    }
+
+    .contact-link-arrow {
+      font-size: 14px;
+      opacity: .4;
+      transition: opacity .2s, transform .2s;
+    }
+
+    .contact-link:hover .contact-link-arrow {
+      opacity: 1;
+      transform: translateX(4px);
+    }
+
+    /* FORM */
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .1em;
+    }
+
+    .form-input,
+    .form-textarea {
+      font-family: var(--mono);
+      font-size: 13px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 12px 16px;
+      border-radius: var(--radius);
+      outline: none;
+      transition: border-color .2s;
+      cursor: none;
+    }
+
+    .form-input:focus,
+    .form-textarea:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(57, 255, 20, .08);
+    }
+
+    .form-textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .form-submit {
+      font-family: var(--mono);
+      font-size: 13px;
+      padding: 14px;
+      background: transparent;
+      border: 1px solid var(--green);
+      color: var(--green);
+      border-radius: var(--radius);
+      cursor: none;
+      letter-spacing: .05em;
+      font-weight: 700;
+      transition: all .2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .form-submit::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--green);
+      transform: translateX(-100%);
+      transition: transform .25s;
+      z-index: -1;
+    }
+
+    .form-submit:hover {
+      color: var(--bg);
+    }
+
+    .form-submit:hover::before {
+      transform: translateX(0);
+    }
+
+    /* =========================================
+       FOOTER
+    ========================================= */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px;
+      text-align: center;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    footer a {
+      color: var(--green);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* =========================================
+       SCROLL REVEAL
+    ========================================= */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    .reveal[data-delay="1"] {
+      transition-delay: .1s;
+    }
+
+    .reveal[data-delay="2"] {
+      transition-delay: .2s;
+    }
+
+    .reveal[data-delay="3"] {
+      transition-delay: .3s;
+    }
+
+    .reveal[data-delay="4"] {
+      transition-delay: .4s;
+    }
+
+    /* =========================================
+       GLITCH EFFECT
+    ========================================= */
+    .glitch {
+      position: relative;
+    }
+
+    .glitch::before,
+    .glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--bg);
+    }
+
+    .glitch::before {
+      color: #ff0040;
+      animation: glitch1 4s infinite;
+    }
+
+    .glitch::after {
+      color: #00ffe5;
+      animation: glitch2 4s infinite;
+    }
+
+    @keyframes glitch1 {
+
+      0%,
+      85%,
+      100% {
+        clip: rect(0, 0, 0, 0);
+        transform: none;
+      }
+
+      87% {
+        clip: rect(12px, 9999px, 30px, 0);
+        transform: skew(-.3deg);
+      }
+
+      89% {
+        clip: rect(60px, 9999px, 80px, 0);
+        transform: skew(.3deg);
+      }
+
+      91% {
+        clip: rect(2px, 9999px, 20px, 0);
+        transform: skew(-.2deg);
+      }
+    }
+
+    @keyframes glitch2 {
+
+      0%,
+      85%,
+      100% {
+        clip: rect(0, 0, 0, 0);
+        transform: none;
+      }
+
+      86% {
+        clip: rect(40px, 9999px, 58px, 0);
+        transform: skew(.3deg);
+      }
+
+      88% {
+        clip: rect(5px, 9999px, 22px, 0);
+        transform: skew(-.4deg);
+      }
+
+      90% {
+        clip: rect(70px, 9999px, 88px, 0);
+        transform: skew(.2deg);
+      }
+    }
+
+    /* =========================================
+       CORNER DECORATIONS
+    ========================================= */
+    .corner-dec {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border-color: var(--green);
+      border-style: solid;
+    }
+
+    .corner-tl {
+      top: 0;
+      left: 0;
+      border-width: 2px 0 0 2px;
+    }
+
+    .corner-tr {
+      top: 0;
+      right: 0;
+      border-width: 2px 2px 0 0;
+    }
+
+    .corner-bl {
+      bottom: 0;
+      left: 0;
+      border-width: 0 0 2px 2px;
+    }
+
+    .corner-br {
+      bottom: 0;
+      right: 0;
+      border-width: 0 2px 2px 0;
+    }
+
+    /* =========================================
+       NOTIFICATION TOAST
+    ========================================= */
+    .toast {
+      position: fixed;
+      bottom: 32px;
+      right: 32px;
+      background: var(--surface);
+      border: 1px solid var(--green);
+      border-radius: var(--radius-lg);
+      padding: 16px 24px;
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--green);
+      z-index: 200;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all .4s cubic-bezier(.34, 1.56, .64, 1);
+      pointer-events: none;
+      box-shadow: 0 0 40px rgba(57, 255, 20, .15);
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* =========================================
+       LANG SWITCHER
+    ========================================= */
+    .lang-switcher {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-left: 24px;
+      padding-left: 24px;
+      border-left: 1px solid var(--border);
+    }
+
+    .lang-btn {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 4px;
+      padding: 4px 8px;
+      cursor: none;
+      transition: all .2s;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      user-select: none;
+    }
+
+    .lang-btn .flag {
+      font-size: 14px;
+      line-height: 1;
+    }
+
+    .lang-btn:hover {
+      color: var(--text2);
+      border-color: var(--border);
+    }
+
+    .lang-btn.active {
+      color: var(--green);
+      border-color: var(--green-dim);
+      background: var(--green-dim);
+    }
+
+    /* =========================================
+       SYNTAX HIGHLIGHT (básico, sem lib)
+    ========================================= */
+    .kw {
+      color: #bb9af7;
+    }
+
+    .fn {
+      color: #7dcfff;
+    }
+
+    .str {
+      color: #9ece6a;
+    }
+
+    .num {
+      color: #ff9e64;
+    }
+
+    .cmt {
+      color: #565f89;
+    }
+
+    .op {
+      color: #89ddff;
+    }
+  </style>
 </head>
 
 <body>
-    <!-- Animated particles -->
-    <div class="particles" id="particles"></div>
-    <div class="aura" id="aura"></div>
 
-    <header>
-        <nav class="nav">
-            <div class="brand">Vithor Roder <b>Dev</b></div>
-            <div>
-                <a href="https://github.com/VithorRoder">Projects</a>
-                <a href="https://github.com/VithorRoder">Contact</a>
-                <a href="https://github.com/VithorRoder" target="_blank" rel="noreferrer">GitHub</a>
+  <canvas id="matrix-canvas"></canvas>
+  <div class="cursor-dot" id="cdot"></div>
+  <div class="cursor-ring" id="cring"></div>
+  <div class="toast" id="toast"></div>
+
+  <!-- ===== NAV ===== -->
+  <nav id="navbar">
+    <div class="nav-brand">
+      <span class="prompt">~/vithor $</span> <span style="color:#39ff14">▌</span>
+    </div>
+    <div style="display:flex;align-items:center;">
+      <div class="nav-links">
+        <a href="#about" data-i18n="nav.about">about</a>
+        <a href="#skills" data-i18n="nav.skills">skills</a>
+        <a href="#playground">ide</a>
+        <a href="#contact" data-i18n="nav.contact">contact</a>
+      </div>
+      <div class="lang-switcher">
+        <button class="lang-btn active" id="btn-en" onclick="setLang('en')" title="English">
+          <span class="flag">🇺🇸</span>
+        </button>
+        <button class="lang-btn" id="btn-pt" onclick="setLang('pt')" title="Português">
+          <span class="flag">🇧🇷</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <section id="hero">
+    <div class="container">
+      <div class="hero-grid">
+
+        <!-- LEFT: texto -->
+        <div>
+          <div class="hero-eyebrow reveal" data-delay="1" data-i18n="hero.eyebrow">Fullstack Developer</div>
+          <h1 class="hero-name reveal glitch" data-text="Vithor Roder" data-delay="2">
+            <span class="accent">Vithor</span> Roder
+          </h1>
+          <div class="hero-role reveal" data-delay="2">
+            &gt; <span class="typed-text" id="typed"></span><span class="t-cursor"></span>
+          </div>
+          <p class="hero-bio reveal" data-delay="3" data-i18n="hero.bio">
+            Desenvolvedor Full-Stack focado em criar sistemas escaláveis através de arquitetura limpa,
+            lógica eficiente e implementação rápida. Comprometido em entregar soluções confiáveis do conceito ao deploy.
+          </p>
+          <div class="hero-cta reveal" data-delay="4">
+            <a class="btn-primary" href="https://github.com/VithorRoder" target="_blank" rel="noreferrer"
+              data-i18n="hero.cta1">
+              → Ver projetos
+            </a>
+            <a class="btn-secondary" href="#contact" data-i18n="hero.cta2">Entrar em contato</a>
+          </div>
+          <div class="hero-status reveal" data-delay="4">
+            <span class="status-dot"></span>
+            <span data-i18n="hero.status">disponível para oportunidades</span>
+          </div>
+        </div>
+
+        <!-- RIGHT: mini terminal -->
+        <div class="hero-terminal reveal" data-delay="3">
+          <div class="terminal-titlebar">
+            <span class="dot dot-r"></span>
+            <span class="dot dot-y"></span>
+            <span class="dot dot-g"></span>
+            <span class="terminal-title">vithor@portfolio ~ bash</span>
+          </div>
+          <div class="terminal-body" id="hero-terminal-body">
+            <!-- preenchido via JS -->
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ABOUT ===== -->
+  <section id="about">
+    <div class="container">
+      <div class="sec-header reveal">
+        <div class="sec-tag" data-i18n="about.tag">sobre mim</div>
+        <h2 class="sec-title" data-i18n="about.title">Quem sou eu</h2>
+        <div class="sec-line"></div>
+      </div>
+      <div class="about-grid">
+        <div class="about-text reveal" data-delay="1">
+          <p data-i18n="about.p1">
+            Olá! Sou <span class="hi">Vithor Roder</span>, desenvolvedor Full-Stack baseado no Rio de Janeiro 🇧🇷.
+            Construo aplicações web e desktop com foco em arquitetura limpa e código de qualidade.
+          </p>
+          <p data-i18n="about.p2">
+            Minha linguagem principal é <span class="hi">Java</span> — uso no dia a dia tanto para backend (Spring Boot,
+            Quarkus, Hibernate, JPA, Flyway, OkHttp, JUnit)
+            quanto para desktop (Swing, JavaFX, SWT). No frontend web trabalho com HTML, CSS, JavaScript e
+            Tailwind/Windi.
+          </p>
+          <p data-i18n="about.p3">
+            Sou desenvolvedor autodidata com experiência prática em projetos reais. Sempre explorando novas tecnologias
+            e
+            aprimorando minhas skills. Foco em <span class="hi">arquitetura limpa</span>, código testável e soluções
+            escaláveis com PostgreSQL, Docker e AWS.
+          </p>
+        </div>
+
+        <div class="about-card reveal" data-delay="2">
+          <div class="about-card-header">// info.json</div>
+          <div class="about-stat">
+            <span class="about-stat-key">name</span>
+            <span class="about-stat-val">"Vithor Roder"</span>
+          </div>
+          <div class="about-stat">
+            <span class="about-stat-key">role</span>
+            <span class="about-stat-val">"Full-Stack Dev"</span>
+          </div>
+          <div class="about-stat">
+            <span class="about-stat-key">main_lang</span>
+            <span class="about-stat-val">"Java ☕"</span>
+          </div>
+          <div class="about-stat">
+            <span class="about-stat-key">location</span>
+            <span class="about-stat-val">"Rio de Janeiro 🇧🇷"</span>
+          </div>
+          <div class="about-stat">
+            <span class="about-stat-key">github</span>
+            <span class="about-stat-val">"@VithorRoder"</span>
+          </div>
+          <div class="about-stat">
+            <span class="about-stat-key">status</span>
+            <span class="about-stat-val" style="color:#39ff14">available: true</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SKILLS ===== -->
+  <section id="skills">
+    <div class="container">
+      <div class="sec-header reveal">
+        <div class="sec-tag" data-i18n="skills.tag">tecnologias</div>
+        <h2 class="sec-title" data-i18n="skills.title">Stack & Skills</h2>
+        <div class="sec-line"></div>
+      </div>
+      <div class="skills-grid">
+
+        <div class="skill-category reveal" data-delay="1">
+          <div class="skill-cat-title"><span class="icon">⬡</span> Backend</div>
+          <div class="skill-item">
+            <div class="skill-item-top"><span>Java</span><span class="skill-pct">95%</span></div>
+            <div class="skill-bar">
+              <div class="skill-fill" style="width:95%"></div>
             </div>
-        </nav>
-    </header>
-
-    <main>
-        <section class="hero">
-            <div class="hero-inner">
-                <div>
-                    <h1 class="title reveal"><span class="gradient">Soon</span></h1>
-                    <p class="subtitle reveal">Portfolio in Development</p>
-                    <div class="cta reveal">
-                        <a class="btn primary" href="https://github.com/VithorRoder">My Projects</a>
-                    </div>
-                </div>
-                <div>
-                    <div class="blob" aria-hidden="true"></div>
-                </div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-item-top"><span>Spring (Boot, Security, Data JPA)</span><span class="skill-pct">90%</span>
             </div>
-        </section>
+            <div class="skill-bar">
+              <div class="skill-fill" style="width:90%"></div>
+            </div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-item-top"><span>Quarkus</span><span class="skill-pct">82%</span></div>
+            <div class="skill-bar">
+              <div class="skill-fill" style="width:82%"></div>
+            </div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-item-top"><span>Hibernate / JPA</span><span class="skill-pct">85%</span></div>
+            <div class="skill-bar">
+              <div class="skill-fill" style="width:85%"></div>
+            </div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-item-top"><span>RESTful APIs</span><span class="skill-pct">90%</span></div>
+            <div class="skill-bar">
+              <div class="skill-fill" style="width:90%"></div>
+            </div>
+          </div>
+        </div>
 
-        <footer>
-            © <span id="year"></span> Vithor Roder
-        </footer>
+        <div class="skill-category reveal" data-delay="2">
+          <div class="skill-cat-title"><span class="icon">⬡</span> Frontend & Desktop</div>
+          <div class="skill-item">
+            <div class="skill-item-top"><span>HTML / CSS</span><span class="skill-pct">90%</span></div>
+            <div class="skill-bar">
+              <div class="skill-fill" style="width:90%"></div>
+            </div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-item-top"><span>JavaScript</span><span class="skill-pct">82%</span></div>
+            <div class="skill-bar">
+              <div class="skill-fill" style="width:82%"></div>
+            </div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-item-top"><span>Tailwind / Windi</span><span class="skill-pct">80%</span></div>
+            <div class="skill-bar">
+              <div class="skill-fill" style="width:80%"></div>
+            </div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-item-top"><span>Java Swing / JavaFX</span><span class="skill-pct">85%</span></div>
+            <div class="skill-bar">
+              <div class="skill-fill" style="width:85%"></div>
+            </div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-item-top"><span>SWT</span><span class="skill-pct">70%</span></div>
+            <div class="skill-bar">
+              <div class="skill-fill" style="width:70%"></div>
+            </div>
+          </div>
+        </div>
 
-        <script>
-            // ===== Year
-            document.getElementById('year').textContent = new Date().getFullYear();
+        <div class="skill-category reveal" data-delay="3">
+          <div class="skill-cat-title"><span class="icon">⬡</span> Tools & DevOps</div>
+          <div class="skill-item">
+            <div class="skill-item-top"><span>PostgreSQL</span><span class="skill-pct">85%</span></div>
+            <div class="skill-bar">
+              <div class="skill-fill" style="width:85%"></div>
+            </div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-item-top"><span>JUnit / Mockito</span><span class="skill-pct">82%</span></div>
+            <div class="skill-bar">
+              <div class="skill-fill" style="width:82%"></div>
+            </div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-item-top"><span>Flyway</span><span class="skill-pct">78%</span></div>
+            <div class="skill-bar">
+              <div class="skill-fill" style="width:78%"></div>
+            </div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-item-top"><span>OkHttp</span><span class="skill-pct">80%</span></div>
+            <div class="skill-bar">
+              <div class="skill-fill" style="width:80%"></div>
+            </div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-item-top"><span>Docker / AWS / Git</span><span class="skill-pct">78%</span></div>
+            <div class="skill-bar">
+              <div class="skill-fill" style="width:78%"></div>
+            </div>
+          </div>
+        </div>
 
-            // ===== Particles
-            const particles = document.getElementById('particles');
-            const COUNT = 100; // ajuste livre
-            for (let i = 0; i < COUNT; i++) {
-                const s = document.createElement('span');
-                const left = Math.random() * 100;
-                const size = Math.random() * 2 + 1;
-                const dur = Math.random() * 18 + 10;
-                const delay = -Math.random() * dur;
-                s.style.left = left + 'vw';
-                s.style.width = size + 'px';
-                s.style.height = size + 'px';
-                s.style.animationDuration = dur + 's';
-                s.style.animationDelay = delay + 's';
-                particles.appendChild(s);
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== IDE INTERATIVA ===== -->
+  <section id="playground">
+    <div class="container">
+      <div class="sec-header reveal">
+        <div class="sec-tag">playground</div>
+        <h2 class="sec-title" data-i18n="ide.title">IDE Interativa</h2>
+        <div class="sec-line"></div>
+      </div>
+      <p class="reveal" style="color:var(--text2);font-size:15px;margin-bottom:32px;line-height:1.7;"
+        data-i18n="ide.desc">
+        Escreva e execute código JavaScript direto no browser. Veja também exemplos de Java/Spring que uso no dia a dia.
+      </p>
+      <div class="ide-wrapper reveal" data-delay="1">
+
+        <!-- Abas -->
+        <div class="ide-tabs">
+          <div class="ide-tab active" onclick="setTab(this,'Main.java')">
+            <span>Main</span><span class="ext">.java</span>
+          </div>
+          <div class="ide-tab" onclick="setTab(this,'app.js')">
+            <span>app</span><span class="ext">.js</span>
+          </div>
+          <div class="ide-tab" onclick="setTab(this,'script.py')">
+            <span>script</span><span class="ext">.py</span>
+          </div>
+          <div class="ide-tab" onclick="setTab(this,'types.ts')">
+            <span>types</span><span class="ext">.ts</span>
+          </div>
+        </div>
+
+        <!-- Corpo do IDE -->
+        <div class="ide-main">
+
+          <!-- Editor -->
+          <div class="ide-editor-pane">
+            <div class="ide-editor-header">
+              <span>editor</span>
+              <span class="ide-lang-badge" id="lang-badge">JAVA</span>
+            </div>
+            <div class="editor-wrap">
+              <div class="line-numbers" id="line-numbers">1</div>
+              <textarea id="code-editor" spellcheck="false" autocorrect="off" autocapitalize="off"
+                oninput="updateLineNumbers()" onkeydown="handleTab(event)">// Vithor Roder — Java Playground
+// Java é minha linguagem principal — Spring, Quarkus, JPA
+
+package dev.vithor.demo;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class Main {
+
+    public static void main(String[] args) {
+        System.out.println("Hello, I'm Vithor Roder");
+        System.out.println("Stack: Java · Spring · Quarkus · PostgreSQL");
+
+        List&lt;String&gt; technologies = List.of(
+            "Spring Boot", "Quarkus", "Hibernate",
+            "Flyway", "JUnit", "OkHttp"
+        );
+
+        // Java Streams API
+        String stack = technologies.stream()
+            .filter(t -&gt; !t.isBlank())
+            .collect(Collectors.joining(" · "));
+
+        System.out.println("Tech: " + stack);
+
+        // Switch this tab to "playground.js" to run real code
+    }
+}</textarea>
+            </div>
+            <div class="ide-toolbar">
+              <div class="ide-toolbar-left">
+                <span class="ide-info" id="cursor-pos">Ln 1, Col 1</span>
+                <span class="ide-info" id="char-count">0 chars</span>
+              </div>
+              <button class="run-btn" id="run-btn" onclick="runCode()">
+                ▶ Run
+              </button>
+            </div>
+          </div>
+
+          <!-- Output -->
+          <div class="ide-output-pane">
+            <div class="ide-output-header">
+              <span>output</span>
+              <div class="output-status">
+                <span class="output-status-dot" id="out-dot"></span>
+                <span id="out-status-text" style="font-size:11px;color:var(--muted)"
+                  data-i18n="ide.status.idle">pronto</span>
+              </div>
+            </div>
+            <div id="output-area">
+              <div class="out-line out-info" data-i18n="ide.placeholder1">// Output appears here when you run code.
+              </div>
+              <div class="out-line out-info" data-i18n="ide.placeholder2">// Press ▶ Run or Ctrl+Enter to execute.</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Exemplos -->
+        <div class="ide-examples">
+          <span class="ide-examples-label" data-i18n="ide.examples">examples:</span>
+          <button class="example-chip" onclick="loadExample('hello')">Hello World</button>
+          <button class="example-chip" onclick="loadExample('streams')">Java Streams</button>
+          <button class="example-chip" onclick="loadExample('builder')">Builder Pattern</button>
+          <button class="example-chip" onclick="loadExample('algo')">Algorithms</button>
+          <button class="example-chip" onclick="loadExample('async')">Async / Fetch</button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONTATO ===== -->
+  <section id="contact">
+    <div class="container">
+      <div class="sec-header reveal">
+        <div class="sec-tag" data-i18n="contact.tag">contato</div>
+        <h2 class="sec-title" data-i18n="contact.title">Vamos conversar</h2>
+        <div class="sec-line"></div>
+      </div>
+      <div class="contact-grid">
+
+        <div>
+          <p class="contact-text reveal" style="font-size:15px;color:var(--text2);line-height:1.8;margin-bottom:36px;"
+            data-i18n="contact.desc">
+            Estou sempre aberto a novas oportunidades, projetos freelance ou simplesmente trocar uma ideia sobre
+            tecnologia.
+            Me manda uma mensagem!
+          </p>
+          <div class="contact-links reveal" data-delay="1">
+            <a class="contact-link" href="https://github.com/VithorRoder" target="_blank" rel="noreferrer">
+              <div class="contact-link-icon">⌥</div>
+              <div class="contact-link-info">
+                <div class="contact-link-label">GitHub</div>
+                <div class="contact-link-value">github.com/VithorRoder</div>
+              </div>
+              <span class="contact-link-arrow">→</span>
+            </a>
+            <a class="contact-link" href="mailto:vithorleaoroder@gmail.com">
+              <div class="contact-link-icon">✉</div>
+              <div class="contact-link-info">
+                <div class="contact-link-label">Email</div>
+                <div class="contact-link-value">vithorleaoroder@gmail.com</div>
+              </div>
+              <span class="contact-link-arrow">→</span>
+            </a>
+            <a class="contact-link" href="https://linkedin.com/in/vithor-roder" target="_blank" rel="noreferrer">
+              <div class="contact-link-icon">in</div>
+              <div class="contact-link-info">
+                <div class="contact-link-label">LinkedIn</div>
+                <div class="contact-link-value">in/vithor-roder</div>
+              </div>
+              <span class="contact-link-arrow">→</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="contact-form reveal" data-delay="2">
+          <div class="form-group">
+            <label class="form-label" data-i18n="contact.form.name">Nome</label>
+            <input type="text" class="form-input" id="f-name" data-i18n-placeholder="contact.form.namePh"
+              placeholder="Seu nome" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" data-i18n="contact.form.email">Email</label>
+            <input type="email" class="form-input" id="f-email" placeholder="seu@email.com" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" data-i18n="contact.form.msg">Mensagem</label>
+            <textarea class="form-textarea" id="f-msg" data-i18n-placeholder="contact.form.msgPh"
+              placeholder="Olá, Vithor! Quero falar sobre..."></textarea>
+          </div>
+          <button class="form-submit" onclick="submitForm()" data-i18n="contact.form.submit">→ Enviar mensagem</button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <div style="font-family:var(--mono);margin-bottom:8px;color:var(--green);font-size:13px;">
+      vithor@phoenix ~ $ <span data-i18n="footer.echo">echo "thanks for visiting"</span>
+    </div>
+    <div>
+      © <span id="year"></span> <a href="https://github.com/VithorRoder">Vithor Roder</a> <span
+        data-i18n="footer.made">— feito com ☕ e muitas linhas de código</span>
+    </div>
+  </footer>
+
+  <!-- =========================================
+     SCRIPTS — equivalente a src/hooks/, src/utils/, etc.
+========================================= -->
+  <script>
+    // ─── cursor.ts ───
+    const cdot = document.getElementById('cdot');
+    const cring = document.getElementById('cring');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+    (function animCursor() {
+      rx += (mx - rx) * .15; ry += (my - ry) * .15;
+      cdot.style.left = mx + 'px'; cdot.style.top = my + 'px';
+      cring.style.left = rx + 'px'; cring.style.top = ry + 'px';
+      requestAnimationFrame(animCursor);
+    })();
+    document.querySelectorAll('a,button,.ide-tab,.example-chip,.contact-link').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        cring.style.width = '48px'; cring.style.height = '48px'; cring.style.opacity = '.8';
+      });
+      el.addEventListener('mouseleave', () => {
+        cring.style.width = '32px'; cring.style.height = '32px'; cring.style.opacity = '.6';
+      });
+    });
+
+    // ─── matrix.ts ───
+    (function matrixRain() {
+      const c = document.getElementById('matrix-canvas');
+      const ctx = c.getContext('2d');
+      c.width = window.innerWidth; c.height = window.innerHeight;
+      window.addEventListener('resize', () => { c.width = window.innerWidth; c.height = window.innerHeight; });
+      const cols = Math.floor(c.width / 16);
+      const drops = Array(cols).fill(1);
+      const chars = 'アイウエオカキクケコサシスセソタチツテト0123456789ABCDEF<>/\\{}[]';
+      setInterval(() => {
+        ctx.fillStyle = 'rgba(10,12,10,0.05)';
+        ctx.fillRect(0, 0, c.width, c.height);
+        ctx.fillStyle = '#39ff14';
+        ctx.font = '14px monospace';
+        drops.forEach((d, i) => {
+          ctx.fillText(chars[Math.floor(Math.random() * chars.length)], i * 16, d * 16);
+          if (d * 16 > c.height && Math.random() > .975) drops[i] = 0;
+          drops[i]++;
+        });
+      }, 60);
+    })();
+
+    // ─── nav.ts ───
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+    // ─── reveal.ts ───
+    const revealEls = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); }
+      });
+    }, { threshold: .12 });
+    revealEls.forEach(el => io.observe(el));
+
+    // Skills bar reveal
+    const skillIo = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.querySelectorAll('.skill-item').forEach((item, i) => {
+            setTimeout(() => item.classList.add('visible'), i * 150);
+          });
+        }
+      });
+    }, { threshold: .3 });
+    document.querySelectorAll('.skill-category').forEach(el => skillIo.observe(el));
+
+    // ─── typed.ts ───
+    const roles = ['Fullstack Developer', 'UI/UX Enthusiast', 'Open Source Fan', 'Problem Solver'];
+    let ri = 0, ci = 0, deleting = false;
+    const typedEl = document.getElementById('typed');
+    function typeLoop() {
+      if (!roles.length) { setTimeout(typeLoop, 200); return; }
+      const current = roles[ri % roles.length];
+      typedEl.textContent = deleting ? current.slice(0, ci--) : current.slice(0, ci++);
+      if (!deleting && ci > current.length) { deleting = true; setTimeout(typeLoop, 1500); return; }
+      if (deleting && ci < 0) { deleting = false; ri++; ci = 0; setTimeout(typeLoop, 400); return; }
+      setTimeout(typeLoop, deleting ? 40 : 80);
+    }
+    typeLoop();
+
+    // ─── heroTerminal.ts ───
+    const terminalLines = [
+      { t: 300, html: '<span class="t-prompt">vithor@phoenix:~$</span> <span class="t-cmd">whoami</span>' },
+      { t: 700, html: '<div class="t-out"><span class="hi">Vithor Roder</span> — Full-Stack Developer · Rio de Janeiro 🇧🇷</div>' },
+      { t: 1300, html: '<span class="t-prompt">vithor@phoenix:~$</span> <span class="t-cmd">cat stack.json</span>' },
+      { t: 1700, html: '<div class="t-out">{ <span class="hi">"main"</span>: <span class="hi">"Java ☕"</span>,</div>' },
+      { t: 1900, html: '<div class="t-out">  <span class="hi">"backend"</span>: [<span class="hi">"Spring"</span>, <span class="hi">"Quarkus"</span>, <span class="hi">"JPA"</span>],</div>' },
+      { t: 2100, html: '<div class="t-out">  <span class="hi">"db"</span>: <span class="hi">"PostgreSQL"</span>, <span class="hi">"tests"</span>: <span class="hi">"JUnit"</span> }</div>' },
+      { t: 2700, html: '<span class="t-prompt">vithor@phoenix:~$</span> <span class="t-cmd">mvn spring-boot:run</span>' },
+      { t: 3100, html: '<div class="t-out"><span class="num">[INFO]</span> Starting Application v1.0.0</div>' },
+      { t: 3250, html: '<div class="t-out"><span class="num">[INFO]</span> Tomcat started on port(s): 8080</div>' },
+      { t: 3400, html: '<div class="t-out"><span class="hi">[INFO]</span> Started Application in 2.3 seconds ✓</div>' },
+      { t: 4000, html: '<span class="t-prompt">vithor@phoenix:~$</span> <span class="t-cursor"></span>' },
+    ];
+    const termBody = document.getElementById('hero-terminal-body');
+    terminalLines.forEach(({ t, html }) => {
+      setTimeout(() => {
+        const div = document.createElement('div');
+        div.innerHTML = html;
+        termBody.appendChild(div);
+        termBody.scrollTop = termBody.scrollHeight;
+      }, t);
+    });
+
+    // ─── year.ts ───
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // ─── toast.ts ───
+    const toast = document.getElementById('toast');
+    function showToast(msg, dur = 3000) {
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), dur);
+    }
+
+    // ─── ide.ts ───
+    const editor = document.getElementById('code-editor');
+    const lineNumbers = document.getElementById('line-numbers');
+    const outputArea = document.getElementById('output-area');
+    const outDot = document.getElementById('out-dot');
+    const outStatusText = document.getElementById('out-status-text');
+    const cursorPos = document.getElementById('cursor-pos');
+    const charCount = document.getElementById('char-count');
+
+    function updateLineNumbers() {
+      const lines = editor.value.split('\n').length;
+      lineNumbers.innerHTML = Array.from({ length: lines }, (_, i) => i + 1).join('<br>');
+      charCount.textContent = editor.value.length + ' chars';
+    }
+    updateLineNumbers();
+
+    editor.addEventListener('keyup', e => {
+      const pos = editor.value.substr(0, editor.selectionStart).split('\n');
+      cursorPos.textContent = `Ln ${pos.length}, Col ${pos[pos.length - 1].length + 1}`;
+    });
+
+    editor.addEventListener('keydown', e => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { e.preventDefault(); runCode(); }
+    });
+
+    function handleTab(e) {
+      if (e.key === 'Tab') {
+        e.preventDefault();
+        const s = editor.selectionStart, end = editor.selectionEnd;
+        editor.value = editor.value.substring(0, s) + '  ' + editor.value.substring(end);
+        editor.selectionStart = editor.selectionEnd = s + 2;
+        updateLineNumbers();
+      }
+    }
+
+    const tabs = {
+      'Main.java': `// Vithor Roder — Java Playground\n// Java is my main language — Spring, Quarkus, JPA\n\npackage dev.vithor.demo;\n\nimport java.util.List;\nimport java.util.stream.Collectors;\n\npublic class Main {\n\n    public static void main(String[] args) {\n        System.out.println("Hello, I'm Vithor Roder");\n        System.out.println("Stack: Java · Spring · Quarkus · PostgreSQL");\n\n        List<String> technologies = List.of(\n            "Spring Boot", "Quarkus", "Hibernate",\n            "Flyway", "JUnit", "OkHttp"\n        );\n\n        // Java Streams API\n        String stack = technologies.stream()\n            .filter(t -> !t.isBlank())\n            .collect(Collectors.joining(" · "));\n\n        System.out.println("Tech: " + stack);\n        System.out.println("Total: " + technologies.size() + " technologies");\n    }\n}`,
+
+      'app.js': `// app.js — JavaScript runs live in your browser!\n// Press ▶ Run to execute\n\nconst developer = {\n  name: 'Vithor Roder',\n  role: 'Full-Stack Developer',\n  stack: ['Java', 'Spring', 'Quarkus', 'PostgreSQL'],\n  location: 'Rio de Janeiro 🇧🇷'\n};\n\nconsole.log('=== Developer Info ===');\nObject.entries(developer).forEach(([key, value]) => {\n  console.log(\`\${key}: \${Array.isArray(value) ? value.join(' · ') : value}\`);\n});\n\n// Modern JS — array methods\nconst projects = [\n  { name: 'API Gateway',   stars: 42 },\n  { name: 'Spring Auth',   stars: 28 },\n  { name: 'Phoenix Suite', stars: 67 }\n];\n\nconst totalStars = projects.reduce((sum, p) => sum + p.stars, 0);\nconst topProject = projects.sort((a, b) => b.stars - a.stars)[0];\n\nconsole.log(\`\\nTotal stars: \${totalStars}\`);\nconsole.log(\`Top project: \${topProject.name} (\${topProject.stars}★)\`);`,
+
+      'script.py': `# script.py — Python data processing example\n# (preview only — Python doesn't run in browser)\n\nfrom dataclasses import dataclass\nfrom typing import List\n\n@dataclass\nclass Technology:\n    name: str\n    category: str\n    years: int\n\ndef build_stack() -> List[Technology]:\n    return [\n        Technology("Java",       "backend",  5),\n        Technology("Spring",     "backend",  4),\n        Technology("PostgreSQL", "database", 4),\n        Technology("Docker",     "devops",   3),\n        Technology("AWS",        "cloud",    2),\n    ]\n\ndef main() -> None:\n    stack = build_stack()\n\n    print(f"Total technologies: {len(stack)}")\n    print(f"Total experience:   {sum(t.years for t in stack)} years\\n")\n\n    # Group by category\n    categories = {}\n    for tech in stack:\n        categories.setdefault(tech.category, []).append(tech.name)\n\n    for category, names in categories.items():\n        print(f"  {category}: {', '.join(names)}")\n\nif __name__ == "__main__":\n    main()`,
+
+      'types.ts': `// types.ts — TypeScript types & interfaces\n// (preview only — TS doesn't run in browser)\n\ninterface Developer {\n  readonly id: string;\n  name: string;\n  email: string;\n  stack: TechStack;\n  available: boolean;\n}\n\ntype TechCategory = 'backend' | 'frontend' | 'database' | 'devops';\n\ninterface TechStack {\n  primary: string;\n  technologies: ReadonlyArray<{\n    name: string;\n    category: TechCategory;\n    level: 1 | 2 | 3 | 4 | 5;\n  }>;\n}\n\n// Generic Repository pattern (similar to JPA)\ninterface Repository<T, ID> {\n  findById(id: ID): Promise<T | null>;\n  findAll(): Promise<T[]>;\n  save(entity: T): Promise<T>;\n  deleteById(id: ID): Promise<void>;\n}\n\nclass UserRepository implements Repository<Developer, string> {\n  async findById(id: string): Promise<Developer | null> {\n    const res = await fetch(\`/api/users/\${id}\`);\n    return res.ok ? res.json() : null;\n  }\n\n  async findAll(): Promise<Developer[]> {\n    return fetch('/api/users').then(r => r.json());\n  }\n\n  async save(user: Developer): Promise<Developer> {\n    return fetch('/api/users', {\n      method: 'POST',\n      body: JSON.stringify(user)\n    }).then(r => r.json());\n  }\n\n  async deleteById(id: string): Promise<void> {\n    await fetch(\`/api/users/\${id}\`, { method: 'DELETE' });\n  }\n}`
+    };
+
+    function getLangFromFile(name) {
+      if (name.endsWith('.java')) return { badge: 'JAVA', runnable: 'simulate' };
+      if (name.endsWith('.js')) return { badge: 'JS', runnable: 'real' };
+      if (name.endsWith('.py')) return { badge: 'PYTHON', runnable: 'simulate' };
+      if (name.endsWith('.ts')) return { badge: 'TS', runnable: 'preview' };
+      return { badge: 'TXT', runnable: 'none' };
+    }
+
+    function setTab(el, name) {
+      document.querySelectorAll('.ide-tab').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+      editor.value = tabs[name];
+      updateLineNumbers();
+      clearOutput();
+
+      const lang = getLangFromFile(name);
+      document.getElementById('lang-badge').textContent = lang.badge;
+      window.currentFile = name;
+    }
+    window.currentFile = 'Main.java';
+
+    const examples = {
+      hello: `// Hello World — JS execution\nconsole.log("Hello, World!");\nconsole.log("I'm Vithor Roder — Full-Stack Developer");\nconsole.log("Main language: Java ☕");\n\nconst greet = (name) => \`Welcome, \${name}!\`;\nconsole.log(greet('Visitor'));`,
+
+      streams: `// Java Streams equivalent in JS\nconst technologies = [\n  { name: 'Spring Boot', category: 'backend', level: 9 },\n  { name: 'Quarkus',     category: 'backend', level: 8 },\n  { name: 'Hibernate',   category: 'backend', level: 8 },\n  { name: 'Tailwind',    category: 'frontend', level: 8 },\n  { name: 'JUnit',       category: 'testing', level: 8 }\n];\n\n// .stream().filter().map().collect()\nconst backendStack = technologies\n  .filter(t => t.category === 'backend')\n  .map(t => \`\${t.name} (lvl \${t.level})\`)\n  .join(' · ');\n\nconsole.log('Backend stack:', backendStack);\n\n// Reduce - sum levels\nconst totalLevels = technologies.reduce((acc, t) => acc + t.level, 0);\nconsole.log('Total mastery:', totalLevels);\n\n// Group by category (similar a Collectors.groupingBy)\nconst grouped = technologies.reduce((acc, t) => {\n  (acc[t.category] = acc[t.category] || []).push(t.name);\n  return acc;\n}, {});\nconsole.log('Grouped:', JSON.stringify(grouped, null, 2));`,
+
+      builder: `// Builder Pattern (similar a OkHttp/Spring Builders)\nclass HttpClientBuilder {\n  constructor() {\n    this.config = {\n      timeout: 30000,\n      headers: {},\n      retries: 0\n    };\n  }\n  setTimeout(ms) { this.config.timeout = ms; return this; }\n  addHeader(key, value) { this.config.headers[key] = value; return this; }\n  setRetries(n) { this.config.retries = n; return this; }\n  build() {\n    console.log('HttpClient configured:');\n    console.log(JSON.stringify(this.config, null, 2));\n    return this.config;\n  }\n}\n\n// Fluent API like Java\nconst client = new HttpClientBuilder()\n  .setTimeout(10000)\n  .addHeader('Accept', 'application/json')\n  .addHeader('Authorization', 'Bearer xxx')\n  .setRetries(3)\n  .build();`,
+
+      algo: `// Classic algorithms\n\n// Bubble Sort\nconst bubbleSort = (arr) => {\n  const a = [...arr];\n  for (let i = 0; i < a.length; i++)\n    for (let j = 0; j < a.length - i - 1; j++)\n      if (a[j] > a[j+1]) [a[j], a[j+1]] = [a[j+1], a[j]];\n  return a;\n};\n\n// Binary Search\nconst binarySearch = (arr, target) => {\n  let lo = 0, hi = arr.length - 1;\n  while (lo <= hi) {\n    const mid = Math.floor((lo + hi) / 2);\n    if (arr[mid] === target) return mid;\n    arr[mid] < target ? (lo = mid + 1) : (hi = mid - 1);\n  }\n  return -1;\n};\n\nconst arr = [64, 34, 25, 12, 22, 11, 90];\nconst sorted = bubbleSort(arr);\nconsole.log('Original:', arr);\nconsole.log('Sorted:', sorted);\nconsole.log('Index of 25:', binarySearch(sorted, 25));`,
+
+      async: `// Async / Fetch (similar ao OkHttp em Java)\nasync function fetchUser(id) {\n  const res = await fetch(\`https://jsonplaceholder.typicode.com/users/\${id}\`);\n  if (!res.ok) throw new Error(\`HTTP \${res.status}\`);\n  return res.json();\n}\n\nasync function main() {\n  console.log('Fetching user...');\n  try {\n    const user = await fetchUser(1);\n    console.log('Name:', user.name);\n    console.log('Email:', user.email);\n    console.log('Company:', user.company.name);\n  } catch(e) {\n    console.error('Failed:', e.message);\n  }\n}\n\nmain();`
+    };
+
+    function loadExample(key) {
+      editor.value = examples[key];
+      updateLineNumbers();
+      clearOutput();
+      // Switch to app.js tab since examples are JS
+      document.querySelectorAll('.ide-tab').forEach(t => t.classList.remove('active'));
+      const jsTab = document.querySelectorAll('.ide-tab')[1];
+      if (jsTab) jsTab.classList.add('active');
+      document.getElementById('lang-badge').textContent = 'JS';
+      window.currentFile = 'app.js';
+    }
+
+    function clearOutput() {
+      const dict = i18n[currentLang] || i18n.en;
+      outputArea.innerHTML =
+        `<div class="out-line out-info" data-i18n="ide.placeholder1">${dict['ide.placeholder1']}</div>` +
+        `<div class="out-line out-info" data-i18n="ide.placeholder2">${dict['ide.placeholder2']}</div>`;
+      setOutStatus('idle');
+    }
+
+    function setOutStatus(state) {
+      outDot.className = 'output-status-dot';
+      const dict = i18n[currentLang] || i18n.en;
+      if (state === 'success') { outDot.classList.add('success'); outStatusText.textContent = dict['ide.status.success']; }
+      else if (state === 'error') { outDot.classList.add('error'); outStatusText.textContent = dict['ide.status.error']; }
+      else if (state === 'running') { outDot.classList.add('running'); outStatusText.textContent = dict['ide.status.running']; }
+      else { outStatusText.textContent = dict['ide.status.idle']; }
+      // Track current state so language changes can re-render
+      outStatusText.dataset.state = state || 'idle';
+    }
+
+    function appendOutput(text, cls = '') {
+      const div = document.createElement('div');
+      div.className = 'out-line ' + cls;
+      div.textContent = text;
+      outputArea.appendChild(div);
+      outputArea.scrollTop = outputArea.scrollHeight;
+    }
+
+    async function runCode() {
+      const btn = document.getElementById('run-btn');
+      btn.textContent = '⏳ Running...';
+      btn.classList.add('running');
+      btn.disabled = true;
+      setOutStatus('running');
+      outputArea.innerHTML = '';
+
+      const dict = i18n[currentLang] || i18n.en;
+      const ts = new Date().toLocaleTimeString();
+      appendOutput(`> ${dict['ide.runAt']} ${ts}`, 'out-info');
+      appendOutput('─'.repeat(40), 'out-info');
+
+      await new Promise(r => setTimeout(r, 300));
+
+      const file = window.currentFile || 'Main.java';
+      const lang = getLangFromFile(file);
+
+      // ─── JAVA: simulate compile + parse System.out.println
+      if (lang.badge === 'JAVA') {
+        appendOutput('› javac ' + file, 'out-info');
+        await new Promise(r => setTimeout(r, 400));
+        appendOutput('› java ' + file.replace('.java', ''), 'out-info');
+        await new Promise(r => setTimeout(r, 300));
+        appendOutput('', 'out-info');
+
+        const code = editor.value;
+        const printRegex = /System\.out\.println\s*\(\s*([\s\S]*?)\s*\)\s*;/g;
+        let match, printedAny = false;
+
+        while ((match = printRegex.exec(code)) !== null) {
+          let arg = match[1].trim();
+          try {
+            let evaluable = arg
+              .replace(/List\.of\s*\(([^)]*)\)/g, '[$1]')
+              .replace(/\.stream\(\)/g, '')
+              .replace(/\.filter\([^)]+\)/g, '')
+              .replace(/\.collect\([^)]+\)/g, ".join(' · ')")
+              .replace(/Collectors\.joining\("([^"]*)"\)/g, '"$1"')
+              .replace(/\.size\(\)/g, '.length');
+            const result = eval(evaluable);
+            appendOutput('› ' + result, 'out-prompt');
+            printedAny = true;
+          } catch (e) {
+            appendOutput('› ' + arg.replace(/^"|"$/g, '').replace(/" \+ "/g, ''), 'out-prompt');
+            printedAny = true;
+          }
+          await new Promise(r => setTimeout(r, 80));
+        }
+
+        if (!printedAny) appendOutput(dict['ide.noPrintln'], 'out-warn');
+
+        appendOutput('─'.repeat(40), 'out-info');
+        appendOutput(dict['ide.exitCode'], 'out-info');
+        setOutStatus('success');
+        btn.textContent = '▶ Run'; btn.classList.remove('running'); btn.disabled = false;
+        return;
+      }
+
+      // ─── PYTHON: simulate by parsing print() calls
+      if (lang.badge === 'PYTHON') {
+        appendOutput('› python3 ' + file, 'out-info');
+        await new Promise(r => setTimeout(r, 400));
+        appendOutput('', 'out-info');
+
+        const code = editor.value;
+        const printRegex = /print\s*\(\s*([\s\S]*?)\s*\)\s*$/gm;
+        const fmtRegex = /^f["']([^"']*)["']$/;
+        let match, printedAny = false;
+
+        // Quick eval of basic Python literals
+        while ((match = printRegex.exec(code)) !== null) {
+          let arg = match[1].trim();
+          try {
+            // Handle f-strings minimally
+            const fMatch = arg.match(fmtRegex);
+            if (fMatch) {
+              appendOutput('› ' + fMatch[1].replace(/\{[^}]*\}/g, '...'), 'out-prompt');
+            } else {
+              // Strip quotes for simple strings
+              const cleaned = arg.replace(/^["']|["']$/g, '');
+              appendOutput('› ' + cleaned, 'out-prompt');
             }
+            printedAny = true;
+          } catch (e) {
+            appendOutput('› ' + arg, 'out-prompt');
+            printedAny = true;
+          }
+          await new Promise(r => setTimeout(r, 60));
+        }
 
-            // ===== Card shine + tilt
-            function handlePointer(e) {
-                const rect = e.currentTarget.getBoundingClientRect();
-                const x = (e.clientX - rect.left) / rect.width * 100;
-                const y = (e.clientY - rect.top) / rect.height * 100;
-                e.currentTarget.style.setProperty('--mx', x + '%');
-                e.currentTarget.style.setProperty('--my', y + '%');
-                const rx = (0.5 - y / 100) * 6;
-                const ry = (x / 100 - 0.5) * 6;
-                e.currentTarget.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
-            }
-            function resetPointer(e) { e.currentTarget.style.transform = ''; }
+        if (!printedAny) appendOutput(dict['ide.noPyPrint'], 'out-warn');
 
-            document.querySelectorAll('[data-tilt]').forEach(card => {
-                card.addEventListener('mousemove', handlePointer);
-                card.addEventListener('mouseleave', resetPointer);
-            });
+        appendOutput('─'.repeat(40), 'out-info');
+        appendOutput(dict['ide.exitCode'], 'out-info');
+        setOutStatus('success');
+        btn.textContent = '▶ Run'; btn.classList.remove('running'); btn.disabled = false;
+        return;
+      }
 
-            // ===== Scroll reveal
-            const revealEls = document.querySelectorAll('.reveal');
-            const io = new IntersectionObserver((entries) => {
-                entries.forEach((en) => {
-                    if (en.isIntersecting) en.target.classList.add('show');
-                })
-            }, { threshold: .12 });
-            revealEls.forEach(el => io.observe(el));
+      // ─── TYPESCRIPT: preview only
+      if (lang.badge === 'TS') {
+        appendOutput('› tsc --noEmit ' + file, 'out-info');
+        await new Promise(r => setTimeout(r, 500));
+        appendOutput(dict['ide.tsTypeCheck'], 'out-prompt');
+        appendOutput('', 'out-info');
+        appendOutput(dict['ide.tsPreview'], 'out-warn');
+        appendOutput(dict['ide.tsHint'], 'out-warn');
+        appendOutput('─'.repeat(40), 'out-info');
+        appendOutput(dict['ide.successDone'], 'out-info');
+        setOutStatus('success');
+        btn.textContent = '▶ Run'; btn.classList.remove('running'); btn.disabled = false;
+        return;
+      }
 
-            // ===== Cursor aura follows
-            const aura = document.getElementById('aura');
-            window.addEventListener('pointermove', (e) => {
-                aura.style.left = e.clientX + 'px';
-                aura.style.top = e.clientY + 'px';
-            });
+      // ─── JAVASCRIPT: real execution
+      let code = editor.value;
 
-            // ===== Parallax blob
-            const blob = document.querySelector('.blob');
-            if (blob) {
-                window.addEventListener('pointermove', (e) => {
-                    const x = (e.clientX / window.innerWidth - .5) * 14;
-                    const y = (e.clientY / window.innerHeight - .5) * 14;
-                    blob.style.transform = `translate(${x}px, ${y}px)`;
-                })
-            }
-        </script>
+      const originalLog = console.log;
+      const originalError = console.error;
+      const originalWarn = console.warn;
+      let hasError = false;
+
+      console.log = (...args) => {
+        appendOutput('› ' + args.map(a => typeof a === 'object' ? JSON.stringify(a, null, 2) : String(a)).join(' '), 'out-prompt');
+        originalLog(...args);
+      };
+      console.error = (...args) => { appendOutput('✕ ' + args.join(' '), 'out-error'); originalError(...args); };
+      console.warn = (...args) => { appendOutput('⚠ ' + args.join(' '), 'out-warn'); originalWarn(...args); };
+
+      try {
+        const fn = new Function(code);
+        const result = fn();
+        if (result instanceof Promise) await result;
+      } catch (e) {
+        hasError = true;
+        appendOutput('✕ ' + e.message, 'out-error');
+      } finally {
+        console.log = originalLog;
+        console.error = originalError;
+        console.warn = originalWarn;
+      }
+
+      appendOutput('─'.repeat(40), 'out-info');
+      appendOutput(hasError ? dict['ide.finishedErr'] : dict['ide.finishedOk'], hasError ? 'out-error' : 'out-info');
+      setOutStatus(hasError ? 'error' : 'success');
+      btn.textContent = '▶ Run'; btn.classList.remove('running'); btn.disabled = false;
+    }
+
+    // ─── contactForm.ts ───
+    function submitForm() {
+      const name = document.getElementById('f-name').value.trim();
+      const email = document.getElementById('f-email').value.trim();
+      const msg = document.getElementById('f-msg').value.trim();
+      if (!name || !email || !msg) { showToast(i18n[currentLang]['toast.required']); return; }
+      showToast(i18n[currentLang]['toast.sent'].replace('{name}', name));
+      document.getElementById('f-name').value = '';
+      document.getElementById('f-email').value = '';
+      document.getElementById('f-msg').value = '';
+    }
+
+    // ─── i18n.ts ───
+    const i18n = {
+      pt: {
+        'nav.about': 'about',
+        'nav.skills': 'skills',
+        'nav.contact': 'contact',
+        'hero.eyebrow': 'Fullstack Developer',
+        'hero.bio': 'Desenvolvedor Full-Stack focado em criar sistemas escaláveis através de arquitetura limpa, lógica eficiente e implementação rápida. Comprometido em entregar soluções confiáveis do conceito ao deploy.',
+        'hero.cta1': '→ Ver projetos',
+        'hero.cta2': 'Entrar em contato',
+        'hero.status': 'disponível para oportunidades',
+        'about.tag': 'sobre mim',
+        'about.title': 'Quem sou eu',
+        'about.p1': 'Olá! Sou <span class="hi">Vithor Roder</span>, desenvolvedor Full-Stack baseado no Rio de Janeiro 🇧🇷. Construo aplicações web e desktop com foco em arquitetura limpa e código de qualidade.',
+        'about.p2': 'Minha linguagem principal é <span class="hi">Java</span> — uso no dia a dia tanto para backend (Spring Boot, Quarkus, Hibernate, JPA, Flyway, OkHttp, JUnit) quanto para desktop (Swing, JavaFX, SWT). No frontend web trabalho com HTML, CSS, JavaScript e Tailwind/Windi.',
+        'about.p3': 'Sou desenvolvedor autodidata com experiência prática em projetos reais. Sempre explorando novas tecnologias e aprimorando minhas skills. Foco em <span class="hi">arquitetura limpa</span>, código testável e soluções escaláveis com PostgreSQL, Docker e AWS.',
+        'skills.tag': 'tecnologias',
+        'skills.title': 'Stack & Skills',
+        'ide.title': 'IDE Interativa',
+        'ide.desc': 'Escreva e execute código JavaScript direto no browser. Veja também exemplos de Java/Spring que uso no dia a dia.',
+        'ide.examples': 'exemplos:',
+        'ide.placeholder1': '// O output aparece aqui quando você rodar o código.',
+        'ide.placeholder2': '// Pressione ▶ Run ou Ctrl+Enter para executar.',
+        'ide.status.idle': 'pronto',
+        'ide.status.running': 'rodando...',
+        'ide.status.success': 'executado',
+        'ide.status.error': 'erro',
+        'ide.runAt': 'Executado em',
+        'ide.exitCode': '✓ Processo finalizado com código de saída 0',
+        'ide.successDone': '✓ Concluído',
+        'ide.finishedOk': '✓ Finalizado com sucesso',
+        'ide.finishedErr': '✕ Finalizado com erros',
+        'ide.noPrintln': '› (nenhum System.out.println encontrado)',
+        'ide.noPyPrint': '› (nenhuma chamada print() encontrada)',
+        'ide.tsTypeCheck': '› ✓ Verificação de tipos OK — 0 erros',
+        'ide.tsPreview': '› O código TypeScript é apenas preview aqui.',
+        'ide.tsHint': '› Mude para app.js para executar JavaScript ao vivo!',
+        'contact.tag': 'contato',
+        'contact.title': 'Vamos conversar',
+        'contact.desc': 'Estou sempre aberto a novas oportunidades, projetos freelance ou simplesmente trocar uma ideia sobre tecnologia. Me manda uma mensagem!',
+        'contact.form.name': 'Nome',
+        'contact.form.namePh': 'Seu nome',
+        'contact.form.email': 'Email',
+        'contact.form.msg': 'Mensagem',
+        'contact.form.msgPh': 'Olá, Vithor! Quero falar sobre...',
+        'contact.form.submit': '→ Enviar mensagem',
+        'toast.required': '⚠ Preencha todos os campos',
+        'toast.sent': '✓ Mensagem enviada, {name}! Em breve retorno.',
+        'footer.echo': 'echo "obrigado por visitar"',
+        'footer.made': '— feito com ☕ e muitas linhas de código',
+      },
+      en: {
+        'nav.about': 'about',
+        'nav.skills': 'skills',
+        'nav.contact': 'contact',
+        'hero.eyebrow': 'Fullstack Developer',
+        'hero.bio': 'Full-Stack Developer focused on creating scalable systems through clean architecture, efficient logic, and rapid implementation. Committed to delivering reliable and maintainable solutions from concept to deployment.',
+        'hero.cta1': '→ View projects',
+        'hero.cta2': 'Get in touch',
+        'hero.status': 'available for opportunities',
+        'about.tag': 'about me',
+        'about.title': 'Who I am',
+        'about.p1': 'Hey! I\'m <span class="hi">Vithor Roder</span>, a Full-Stack Developer based in Rio de Janeiro 🇧🇷. I build web and desktop applications focused on clean architecture and quality code.',
+        'about.p2': 'My main language is <span class="hi">Java</span> — I use it daily for both backend (Spring Boot, Quarkus, Hibernate, JPA, Flyway, OkHttp, JUnit) and desktop (Swing, JavaFX, SWT). On web frontend, I work with HTML, CSS, JavaScript and Tailwind/Windi.',
+        'about.p3': 'I\'m a self-taught developer with hands-on experience in real projects. Always exploring new technologies and improving my skills. Focused on <span class="hi">clean architecture</span>, testable code, and scalable solutions with PostgreSQL, Docker and AWS.',
+        'skills.tag': 'technologies',
+        'skills.title': 'Stack & Skills',
+        'ide.title': 'Interactive IDE',
+        'ide.desc': 'Write and run JavaScript code in your browser. Also check Java/Spring snippets I use every day.',
+        'ide.examples': 'examples:',
+        'ide.placeholder1': '// Output appears here when you run code.',
+        'ide.placeholder2': '// Press ▶ Run or Ctrl+Enter to execute.',
+        'ide.status.idle': 'ready',
+        'ide.status.running': 'running...',
+        'ide.status.success': 'done',
+        'ide.status.error': 'error',
+        'ide.runAt': 'Run at',
+        'ide.exitCode': '✓ Process finished with exit code 0',
+        'ide.successDone': '✓ Done',
+        'ide.finishedOk': '✓ Finished successfully',
+        'ide.finishedErr': '✕ Finished with errors',
+        'ide.noPrintln': '› (no System.out.println found)',
+        'ide.noPyPrint': '› (no print() calls found)',
+        'ide.tsTypeCheck': '› ✓ Type check passed — 0 errors',
+        'ide.tsPreview': '› TypeScript code is preview-only here.',
+        'ide.tsHint': '› Switch to app.js to run JavaScript live!',
+        'contact.tag': 'contact',
+        'contact.title': "Let's talk",
+        'contact.desc': "I'm always open to new opportunities, freelance projects, or just chatting about tech. Drop me a message!",
+        'contact.form.name': 'Name',
+        'contact.form.namePh': 'Your name',
+        'contact.form.email': 'Email',
+        'contact.form.msg': 'Message',
+        'contact.form.msgPh': "Hey Vithor! I'd like to talk about...",
+        'contact.form.submit': '→ Send message',
+        'toast.required': '⚠ Please fill in all fields',
+        'toast.sent': '✓ Message sent, {name}! I\'ll get back to you soon.',
+        'footer.echo': 'echo "thanks for visiting"',
+        'footer.made': '— made with ☕ and many lines of code',
+      }
+    };
+
+    let currentLang = 'en';
+
+    // typed roles by language
+    const rolesByLang = {
+      pt: ['Full-Stack Developer', 'Java · Spring · Quarkus', 'Backend Specialist', 'Clean Code Enthusiast'],
+      en: ['Full-Stack Developer', 'Java · Spring · Quarkus', 'Backend Specialist', 'Clean Code Enthusiast'],
+    };
+
+    function setLang(lang) {
+      currentLang = lang;
+
+      // toggle button state
+      document.getElementById('btn-pt').classList.toggle('active', lang === 'pt');
+      document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+
+      // update html lang attribute
+      document.documentElement.lang = lang === 'pt' ? 'pt-br' : 'en';
+
+      const dict = i18n[lang];
+
+      // update all data-i18n elements
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.dataset.i18n;
+        if (dict[key] !== undefined) el.innerHTML = dict[key];
+      });
+
+      // update placeholders
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.dataset.i18nPlaceholder;
+        if (dict[key] !== undefined) el.placeholder = dict[key];
+      });
+
+      // restart typed animation with new roles
+      roles.length = 0;
+      rolesByLang[lang].forEach(r => roles.push(r));
+      ri = 0; ci = 0; deleting = false;
+      typedEl.textContent = '';
+
+      // Re-render IDE status text in current language
+      if (typeof outStatusText !== 'undefined' && outStatusText) {
+        const state = outStatusText.dataset.state || 'idle';
+        setOutStatus(state === 'idle' ? null : state);
+      }
+
+      showToast(lang === 'en' ? '🇺🇸 Switched to English' : '🇧🇷 Trocado para Português');
+    }
+
+    // Apply default language (English) on load — silent, no toast
+    (function applyDefaultLang() {
+      const dict = i18n['en'];
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.dataset.i18n;
+        if (dict[key] !== undefined) el.innerHTML = dict[key];
+      });
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.dataset.i18nPlaceholder;
+        if (dict[key] !== undefined) el.placeholder = dict[key];
+      });
+      document.documentElement.lang = 'en';
+      document.getElementById('btn-en').classList.add('active');
+      document.getElementById('btn-pt').classList.remove('active');
+    })();
+  </script>
 </body>
 
 </html>
